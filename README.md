@@ -10,7 +10,9 @@ How to use
 
 Compile and Launch.
 
-Then you have to compile few fields:
+This window will appear and you have to compile few fields:
+
+![main-form](https://cloud.githubusercontent.com/assets/4108673/11749980/1ec25a66-a031-11e5-929b-1730ed57ca11.jpg)
 
 1. Host: Server hostname. Now the code supports only trused connection, so it does not need username/password;
 2. Database: Database name;
