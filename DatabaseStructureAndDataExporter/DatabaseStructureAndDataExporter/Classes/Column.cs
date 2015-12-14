@@ -93,7 +93,7 @@ namespace DatabaseStructureAndData.Classes
         public String exportToCSharpProperty()
         {
             String var = "_" + Name;
-            String s = String.Format("public {0} {1} {{ get {{ return {2}; }} set {{ {3} = value; NotifyPropertyChanged(\"{4}\"); }} }};",
+            String s = String.Format("public {0} {1} {{ get {{ return {2}; }} set {{ {3} = value; NotifyPropertyChanged(\"{4}\"); }} }}",
                 TypeCShart, Name, var, var, Name);
             return s;
         }
