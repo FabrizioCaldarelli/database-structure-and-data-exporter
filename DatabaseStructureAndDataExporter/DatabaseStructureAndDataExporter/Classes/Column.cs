@@ -52,12 +52,18 @@ namespace DatabaseStructureAndData.Classes
         {
             Name = name;
 
-            switch(datatype)
+            switch (datatype)
             {
                 case "bit":
+                case "smallint":
                 case "tinyint":
                 case "int":
                     Type = ColumnType.Integer;
+                    break;
+                case "float":
+                case "decimal":
+                case "numeric":
+                    Type = ColumnType.Float;
                     break;
                 case "varchar":
                 case "nvarchar":
@@ -66,10 +72,14 @@ namespace DatabaseStructureAndData.Classes
                     break;
                 case "smalldatetime":
                 case "datetime":
+                case "date":
                     Type = ColumnType.DateTime;
                     break;
+                case "money":
+                    Type = ColumnType.String;
+                    break;
                 default:
-                    throw new Exception("Column data type not found = "+datatype);
+                    throw new Exception("Column data type not found = " + datatype);
             }
         }
 
