@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,29 +43,11 @@ namespace DatabaseStructureAndData.Classes
 
         public static String exportStructurCSharpBaseModel(String modelNamespace)
         {
-            String strBase = String.Format(
-                "using System;\n" +
-                "using System.Collections.Generic;\n" +
-                "using System.ComponentModel;\n" +
-                "using System.Linq;\n" +
-                "using System.Text;\n" +
-                "using System.Threading.Tasks;\n" +
-                "\n" +
-                "namespace {0}\n" +
-                "{{\n" +
-                "   public class BaseModel : INotifyPropertyChanged\n" +
-                "   {{\n" +
-                "       public event PropertyChangedEventHandler PropertyChanged;\n" +
-                "       protected void NotifyPropertyChanged(String propertyName)\n" +
-                "       {{\n" +
-                "           PropertyChangedEventHandler handler = PropertyChanged;\n" +
-                "           if (null != handler) handler(this, new PropertyChangedEventArgs(propertyName));\n" +
-                "       }}\n" +
-                "   }}\n" +
-                "}}\n"
-                , modelNamespace);
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Templates\CSharp\BaseModel.tpl");
+            string fileContent = File.ReadAllText(path);
+            fileContent = fileContent.Replace("___TOKEN_NAMESPACE___", modelNamespace);
 
-            return strBase;
+            return fileContent;
         }
 
         public String exportStructureToCSharpModel(String modelNamespace)
@@ -93,10 +77,14 @@ namespace DatabaseStructureAndData.Classes
                     "   public class {1} : BaseModel\n" +
                     "   {{\n" +
                     "       // Members\n" +
+                    "       #region Members" +
                     "       {2}\n" +
+                    "       #endregion" +
                     "\n" +
                     "       // Properties\n" +
+                    "       #region Properties" +
                     "       {3}\n" +
+                    "       #endregion" +
                     "   }}\n" +
                     "}}\n"
                     , modelNamespace, Name, strRigheMember, strRigheProperty);

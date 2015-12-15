@@ -10,6 +10,7 @@ namespace DatabaseStructureAndData.Classes
     {
         public enum ColumnType
         {
+            Boolean,
             Integer,
             Float,
             String,
@@ -28,6 +29,9 @@ namespace DatabaseStructureAndData.Classes
                 String s = null;
                 switch (Type)
                 {
+                    case ColumnType.Boolean:
+                        s = "bool";
+                        break;
                     case ColumnType.Integer:
                         s = "int";
                         break;
@@ -55,6 +59,8 @@ namespace DatabaseStructureAndData.Classes
             switch (datatype)
             {
                 case "bit":
+                    Type = ColumnType.Boolean;
+                    break;
                 case "smallint":
                 case "tinyint":
                 case "int":
@@ -87,14 +93,18 @@ namespace DatabaseStructureAndData.Classes
 
         public String exportToCSharpMember()
         {
-            String s = String.Format("private {0} _{1};", TypeCShart, Name);
+            string nullableChar = (Type != ColumnType.String) ? "?" : "";
+
+            String s = String.Format("private {0}{1} _{2};", TypeCShart, nullableChar, Name);
             return s;
         }
         public String exportToCSharpProperty()
         {
+            string nullableChar = (Type != ColumnType.String) ? "?" : "";
+
             String var = "_" + Name;
-            String s = String.Format("public {0} {1} {{ get {{ return {2}; }} set {{ {3} = value; NotifyPropertyChanged(\"{4}\"); }} }}",
-                TypeCShart, Name, var, var, Name);
+            String s = String.Format("public {0}{1} {2} {{ get {{ return {3}; }} set {{ {4} = value; NotifyPropertyChanged(\"{5}\"); }} }}",
+                TypeCShart, nullableChar, Name, var, var, Name);
             return s;
         }
     }
